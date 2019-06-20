@@ -49,8 +49,12 @@ export default {
                 if(meta.status===200){
                     localStorage.setItem('token',data.token)
                     this.$router.push('/')
+                    this.$message({
+          message: '恭喜你，登录成功啦',
+          type: 'success'
+        })
                 }else{
-                    alert(meta.msg)
+                    this.$message.error(meta.msg);
                 }
             }).catch(err=>{
                 console.log(err);
