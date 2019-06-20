@@ -7,6 +7,11 @@ import router from './router'
 import Element from 'Element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
+//引入axios
+import axios from 'axios'
+//将axios挂载到vue原型上
+Vue.prototype.$http=axios
+
 //使用element
 Vue.use(Element)
 Vue.config.productionTip = false
