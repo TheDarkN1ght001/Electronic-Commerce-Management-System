@@ -1,12 +1,12 @@
 <template>
     <div class="login">
         <div class="content">
-            <el-form   label-position="top" :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+            <el-form   label-position="top" :model="userMsg" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                 <h2>用户登录</h2>
-            <el-form-item label="用户名" prop="pass">
-                <el-input type="text" v-model="userMsg.username"></el-input>
+            <el-form-item label="用户名" prop="username">
+                <el-input type="text" v-model="userMsg.username"  ></el-input>
             </el-form-item>
-            <el-form-item label="密码" prop="checkPass">
+            <el-form-item label="密码" prop="password">
                 <el-input type="password" v-model="userMsg.password"></el-input>
             </el-form-item>
             <el-form-item>
@@ -25,11 +25,21 @@ export default {
             userMsg:{
                 username:'',
                 password:''
-            }
+            },
+            rules: {
+          username: [
+            { required: true, message: '请输入账号', trigger: 'blur' },
+          ],
+          password: [
+            { required: true, message: '请输入密码', trigger: 'blur' },
+          ]
+     }
         }
     },
     methods: {
         login(){
+             this.$refs.ruleForm.validate((valid) => {
+          if (valid) {
             this.$http({
                 method:'POST',
                 url:'http://localhost:8888/api/private/v1/login',
@@ -46,8 +56,14 @@ export default {
                 console.log(err);
                 
             })
+          }
+        });
+
+            
         }
     },
+     
+    
 }
 </script>
 
@@ -71,3 +87,4 @@ export default {
         box-sizing: border-box;
     }
 </style>
+
