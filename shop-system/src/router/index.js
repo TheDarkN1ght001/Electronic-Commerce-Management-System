@@ -13,7 +13,7 @@ export default new Router({
     {path: '/useelement', name: 'useelement', component: Useelement},
     // 添加一个login路由
     {path: '/login', name: 'login', component: Login},
-    //添加主页home路由
+    // 添加主页home路由
     {path: '/', name: 'home', component: Home}
   ]
 })
