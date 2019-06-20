@@ -18,56 +18,52 @@
 </template>
 
 <script>
-import { log } from 'util';
+// import { log } from 'util'
 export default {
-    data() {
-        return {
-            userMsg:{
-                username:'',
-                password:''
-            },
-            rules: {
-          username: [
-            { required: true, message: '请输入账号', trigger: 'blur' },
-          ],
-          password: [
-            { required: true, message: '请输入密码', trigger: 'blur' },
-          ]
-     }
+  data () {
+    return {
+      userMsg: {
+        username: '',
+        password: ''
+      },
+      rules: {
+        username: [
+          { required: true, message: '请输入账号', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+        ]
+      }
+    }
+  },
+  methods: {
+    login () {
+      this.$refs.ruleForm.validate((valid) => {
+        if (valid) {
+          this.$http({
+            method: 'POST',
+            url: 'http://localhost:8888/api/private/v1/login',
+            data: this.userMsg
+          }).then(res => {
+            const {data, meta} = res.data
+            if (meta.status === 200) {
+              localStorage.setItem('token', data.token)
+              this.$router.push('/')
+              this.$message({
+                message: '恭喜你，登录成功啦',
+                type: 'success'
+              })
+            } else {
+              this.$message.error(meta.msg)
+            }
+          }).catch(err => {
+            console.log(err)
+          })
         }
-    },
-    methods: {
-        login(){
-             this.$refs.ruleForm.validate((valid) => {
-          if (valid) {
-            this.$http({
-                method:'POST',
-                url:'http://localhost:8888/api/private/v1/login',
-                data:this.userMsg
-            }).then(res=>{
-                const{data,meta}=res.data
-                if(meta.status===200){
-                    localStorage.setItem('token',data.token)
-                    this.$router.push('/')
-                    this.$message({
-          message: '恭喜你，登录成功啦',
-          type: 'success'
-        })
-                }else{
-                    this.$message.error(meta.msg);
-                }
-            }).catch(err=>{
-                console.log(err);
-                
-            })
-          }
-        });
+      })
+    }
+  }
 
-            
-        }
-    },
-     
-    
 }
 </script>
 
@@ -91,4 +87,3 @@ export default {
         box-sizing: border-box;
     }
 </style>
-
