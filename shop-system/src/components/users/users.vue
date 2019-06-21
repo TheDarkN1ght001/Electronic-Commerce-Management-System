@@ -72,103 +72,103 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       tableData: [],
-      //查询关键字
-      query: "",
-      //当前页
+      // 查询关键字
+      query: '',
+      // 当前页
       pagenum: 1,
-      //页容量
+      // 页容量
       pagesize: 3,
-      //容量选项
+      // 容量选项
       pagesizes: [3, 5, 10],
-      //总条数
+      // 总条数
       total: 0,
-      //控制弹窗显影
-      Adddialog:false,
-      //弹窗的宽度
-      formLabelWidth:'88px',
-      addUserMsg:{
-          username:'',
-          password:'',
-          email:'',
-          mobile:''
+      // 控制弹窗显影
+      Adddialog: false,
+      // 弹窗的宽度
+      formLabelWidth: '88px',
+      addUserMsg: {
+        username: '',
+        password: '',
+        email: '',
+        mobile: ''
       }
-    };
+    }
   },
   methods: {
-    getData() {
+    getData () {
       this.$http({
-        method: "GET",
+        method: 'GET',
         url: `http://localhost:8888/api/private/v1/users?query=${
           this.query
         }&pagenum=${this.pagenum}&pagesize=${this.pagesize}`,
         headers: {
-          Authorization: window.localStorage.getItem("token")
+          Authorization: window.localStorage.getItem('token')
         }
       }).then(res => {
-        const { meta, data } = res.data;
+        const { meta, data } = res.data
         if (meta.status === 200) {
-          this.tableData = data.users;
-          //得到总条数
-          this.total = data.total;
+          this.tableData = data.users
+          // 得到总条数
+          this.total = data.total
         }
-      });
+      })
     },
-    changepage(currentPage) {
+    changepage (currentPage) {
       // console.log(currentPage);
-      this.pagenum = currentPage;
-      this.getData();
+      this.pagenum = currentPage
+      this.getData()
     },
-    sizeChange(pagesize) {
-      this.pagesize = pagesize;
-      this.getData();
+    sizeChange (pagesize) {
+      this.pagesize = pagesize
+      this.getData()
     },
-    //搜索用户信息
-    search() {
-      this.getData();
+    // 搜索用户信息
+    search () {
+      this.getData()
     },
-    //打开信息添加的弹窗
-    openAddPage() {
-      this.Adddialog=true
+    // 打开信息添加的弹窗
+    openAddPage () {
+      this.Adddialog = true
     },
-    //弹窗的取消按钮（点击后影藏弹窗）
-    visnone(){
-        this.Adddialog=false
+    // 弹窗的取消按钮（点击后影藏弹窗）
+    visnone () {
+      this.Adddialog = false
     },
-    //添加用户信息
-    addUser(){
-        this.$http({
-            method:'POST',
-            url:'http://localhost:8888/api/private/v1/users',
-            data:this.addUserMsg,
-            headers: {
-          Authorization: window.localStorage.getItem("token")
+    // 添加用户信息
+    addUser () {
+      this.$http({
+        method: 'POST',
+        url: 'http://localhost:8888/api/private/v1/users',
+        data: this.addUserMsg,
+        headers: {
+          Authorization: window.localStorage.getItem('token')
         }
-        }).then(res=>{
-            if(res.data.meta.status===201){
-                this.$message({
-                    message:res.data.meta.msg,
-                    type:'success'
-                })
-                this.getData()
-            }else{
-                this.$message.error(res.data.meta.msg)
-            }
-            //清空输入框数据
-            for (var key in this.addUserMsg) {
-                this.addUserMsg[key]=''
-            }
-            //关闭面板
-            this.Adddialog=false
-        })
+      }).then(res => {
+        if (res.data.meta.status === 201) {
+          this.$message({
+            message: res.data.meta.msg,
+            type: 'success'
+          })
+          this.getData()
+        } else {
+          this.$message.error(res.data.meta.msg)
+        }
+        // 清空输入框数据
+        for (var key in this.addUserMsg) {
+          this.addUserMsg[key] = ''
+        }
+        // 关闭面板
+        this.Adddialog = false
+      })
     }
   },
-  mounted() {
-    this.getData();
+  mounted () {
+    this.getData()
   }
-};
+}
 </script>
 
 <style>

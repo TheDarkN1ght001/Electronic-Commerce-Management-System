@@ -19,41 +19,41 @@
 </template>
 
 <script>
-//导入组件
-import topHead from "../layout/tophead";
-import sideBar from "../layout/sidebar";
+// 导入组件
+import topHead from '../layout/tophead'
+import sideBar from '../layout/sidebar'
 
 export default {
   components: {
     topHead,
     sideBar
   },
-  data() {
-    return {};
+  data () {
+    return {}
   },
   methods: {
-    out() {
-      this.$confirm("您确定退出系统吗 TAT?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+    out () {
+      this.$confirm('您确定退出系统吗 TAT?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       }).then(() => {
-        this.$router.push("/login");
-        window.localStorage.removeItem("token");
+        this.$router.push('/login')
+        window.localStorage.removeItem('token')
         this.$message({
-          type: "success",
-          message: "退出成功啦 QAQ!"
-        });
-      });
+          type: 'success',
+          message: '退出成功啦 QAQ!'
+        })
+      })
     }
   },
-  mounted() {
-    if (!window.localStorage.getItem("token")) {
-      this.$router.push("/login");
-      this.$message.error("对不起，您还没有登录的哦 ^.^");
+  mounted () {
+    if (!window.localStorage.getItem('token')) {
+      this.$router.push('/login')
+      this.$message.error('对不起，您还没有登录的哦 ^.^')
     }
   }
-};
+}
 </script>
 
 <style>

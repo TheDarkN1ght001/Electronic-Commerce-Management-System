@@ -14,6 +14,6 @@ export default new Router({
     // 添加一个login路由
     {path: '/login', name: 'login', component: Login},
     // 添加主页home路由
-    {path: '/', name: 'home', component: Home,children:[{path:'/users',component:Users}]}
+    {path: '/', name: 'home', component: Home, children: [{path: '/users', component: Users}]}
   ]
 })

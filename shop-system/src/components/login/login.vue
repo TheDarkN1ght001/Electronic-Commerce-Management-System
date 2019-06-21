@@ -54,7 +54,7 @@ export default {
                 type: 'success'
               })
             } else {
-              this.$message.error(meta.msg+'QAQ')
+              this.$message.error(meta.msg + 'QAQ')
             }
           }).catch(err => {
             console.log(err)
