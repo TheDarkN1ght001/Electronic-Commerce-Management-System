@@ -50,11 +50,11 @@ export default {
               localStorage.setItem('token', data.token)
               this.$router.push('/')
               this.$message({
-                message: '恭喜你，登录成功啦',
+                message: '恭喜你，登录成功啦 0.0Y',
                 type: 'success'
               })
             } else {
-              this.$message.error(meta.msg)
+              this.$message.error(meta.msg+'QAQ')
             }
           }).catch(err => {
             console.log(err)
