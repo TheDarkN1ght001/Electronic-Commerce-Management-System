@@ -35,8 +35,8 @@
         <el-button type="success" icon="el-icon-check" size="mini" round></el-button>
       </el-table-column>
     </el-table>
-    <!-- 分页 -->
-    <el-pagination></el-pagination>
+    <!-- 分页  current-page当前页 page-sizes页容量-->
+    <el-pagination :current-page="pagenum" :page-sizes="[3,5,10]" :page-size="pagesize" :total='total' @size-change='sizeChange' @current-change="changepage" layout="total, sizes, prev, pager, next, jumper"></el-pagination>
   </el-card>
 </template>
 
@@ -50,7 +50,11 @@ export default {
       //当前页
       pagenum: 1,
       //页容量
-      pagesize: 3
+      pagesize: 3,
+      //容量选项
+      pagesizes:[3,5,10],
+      //总条数
+      total:0
     };
   },
   methods: {
@@ -67,8 +71,19 @@ export default {
         const { meta, data } = res.data;
         if (meta.status === 200) {
           this.tableData = data.users;
+          //得到总条数
+          this.total=data.total
         }
       });
+    },
+    changepage(currentPage){
+        // console.log(currentPage);
+        this.pagenum=currentPage
+        this.getData()
+    },
+    sizeChange(pagesize){
+        this. pagesize=pagesize
+        this.getData()
     }
   },
   mounted() {
