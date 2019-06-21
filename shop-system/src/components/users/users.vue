@@ -9,8 +9,8 @@
     <!-- 搜索框 -->
     <el-row class="myrow">
       <el-col :span="6">
-        <el-input placeholder="请输入内容" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-input placeholder="请输入内容" v-model="query" class="input-with-select">
+          <el-button @click.prevent="search" slot="append" icon="el-icon-search"></el-button>
         </el-input>
       </el-col>
       <el-col :span="4">
@@ -25,7 +25,6 @@
       <el-table-column prop="mobile" label="电话"></el-table-column>
       <el-table-column prop="mg-state" label="用户状态">
         <template slot-scope="scope">
-          {{scope.row}}
           <el-switch v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
         </template>
       </el-table-column>
@@ -83,6 +82,10 @@ export default {
     },
     sizeChange(pagesize){
         this. pagesize=pagesize
+        this.getData()
+    },
+    //搜索用户信息
+    search(){
         this.getData()
     }
   },
