@@ -3,13 +3,13 @@
     <el-header>
       <el-row>
         <el-col :span="4">
-          <img src="../../assets/logo.png" alt>
+          <img src="../../assets/logo.png" alt="">
         </el-col>
         <el-col :span="16">
           <h2>黑夜后台管理系统</h2>
         </el-col>
         <el-col :span="4">
-          <el-button @click.prevent="out" type="primary" icon="el-icon-switch-button">退出</el-button>
+          <el-button @click.prevent='out' type="primary" icon="el-icon-switch-button">退出</el-button>
         </el-col>
       </el-row>
     </el-header>
@@ -23,7 +23,9 @@
 <script>
 export default {
   data () {
-    return {}
+    return {
+
+    }
   },
   methods: {
     out () {
@@ -43,10 +45,10 @@ export default {
   line-height: 60px;
 }
 .el-header h2 {
-  margin: 0;
+    margin: 0;
 }
 .el-header img {
-  height: 60px;
+    height: 60px;
 }
 .el-container {
   height: 100%;
