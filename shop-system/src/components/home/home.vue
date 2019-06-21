@@ -1,27 +1,31 @@
 <template>
   <el-container>
+    <!-- 头部 -->
     <el-header>
-      <el-row>
-        <el-col :span="4">
-          <img src="../../assets/logo.png" alt>
-        </el-col>
-        <el-col :span="16">
-          <h2>黑夜后台管理系统</h2>
-        </el-col>
-        <el-col :span="4">
-          <el-button @click.prevent="out" type="primary" icon="el-icon-switch-button">退出</el-button>
-        </el-col>
-      </el-row>
+      <topHead></topHead>
     </el-header>
     <el-container>
-      <el-aside width="200px">Aside</el-aside>
+      <!-- 侧边栏 -->
+      <el-aside width="201px">
+        <!-- 菜单栏 -->
+        <sideBar></sideBar>
+      </el-aside>
+      <!-- 内容部分 -->
       <el-main>Main</el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
+//导入组件
+import topHead from "../layout/tophead";
+import sideBar from "../layout/sidebar";
+
 export default {
+  components: {
+    topHead,
+    sideBar
+  },
   data() {
     return {};
   },
@@ -44,7 +48,7 @@ export default {
   mounted() {
     if (!window.localStorage.getItem("token")) {
       this.$router.push("/login");
-      this.$message.error('对不起，您还没有登录的哦 ^.^');
+      this.$message.error("对不起，您还没有登录的哦 ^.^");
     }
   }
 };
@@ -58,6 +62,7 @@ export default {
   line-height: 60px;
 }
 .el-header h2 {
+  color: #409eff;
   margin: 0;
 }
 .el-header img {
@@ -69,10 +74,11 @@ export default {
 .el-aside {
   background-color: #d3dce6;
   color: #333;
-  text-align: center;
   line-height: 200px;
 }
-
+.mymenu {
+  height: 100%;
+}
 .el-main {
   background-color: #e9eef3;
   color: #333;
