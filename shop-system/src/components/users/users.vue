@@ -14,9 +14,10 @@
         </el-input>
       </el-col>
       <el-col :span="4">
-        <el-button type="success" plain class="mybtn">添加按钮</el-button>
+        <el-button type="success" plain class="mybtn" @click.prevent="openAddPage">添加按钮</el-button>
       </el-col>
     </el-row>
+
     <!-- 表格 -->
     <el-table :data="tableData" style="width: 100%">
       <el-table-column type="index"></el-table-column>
@@ -35,7 +36,37 @@
       </el-table-column>
     </el-table>
     <!-- 分页  current-page当前页 page-sizes页容量-->
-    <el-pagination :current-page="pagenum" :page-sizes="[3,5,10]" :page-size="pagesize" :total='total' @size-change='sizeChange' @current-change="changepage" layout="total, sizes, prev, pager, next, jumper"></el-pagination>
+    <el-pagination
+      :current-page="pagenum"
+      :page-sizes="[3,5,10]"
+      :page-size="pagesize"
+      :total="total"
+      @size-change="sizeChange"
+      @current-change="changepage"
+      layout="total, sizes, prev, pager, next, jumper"
+    ></el-pagination>
+    <!-- 弹窗添加用户信息页面 -->
+    <el-dialog title="添加用户" :visible.sync="Adddialog">
+      <el-form>
+          {{addUserMsg}}
+        <el-form-item label="用户名" :label-width="formLabelWidth">
+          <el-input  v-model="addUserMsg.username" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" :label-width="formLabelWidth">
+          <el-input  v-model="addUserMsg.password" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" :label-width="formLabelWidth">
+          <el-input  v-model="addUserMsg.email" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="电话" :label-width="formLabelWidth">
+          <el-input v-model="addUserMsg.mobile"  autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+    <el-button  @click.prevent="visnone">取 消</el-button>
+    <el-button type="primary"  @click.prevent="addUser">确 定</el-button>
+  </div>
+    </el-dialog>
   </el-card>
 </template>
 
@@ -51,9 +82,19 @@ export default {
       //页容量
       pagesize: 3,
       //容量选项
-      pagesizes:[3,5,10],
+      pagesizes: [3, 5, 10],
       //总条数
-      total:0
+      total: 0,
+      //控制弹窗显影
+      Adddialog:false,
+      //弹窗的宽度
+      formLabelWidth:'88px',
+      addUserMsg:{
+          username:'',
+          password:'',
+          email:'',
+          mobile:''
+      }
     };
   },
   methods: {
@@ -71,22 +112,57 @@ export default {
         if (meta.status === 200) {
           this.tableData = data.users;
           //得到总条数
-          this.total=data.total
+          this.total = data.total;
         }
       });
     },
-    changepage(currentPage){
-        // console.log(currentPage);
-        this.pagenum=currentPage
-        this.getData()
+    changepage(currentPage) {
+      // console.log(currentPage);
+      this.pagenum = currentPage;
+      this.getData();
     },
-    sizeChange(pagesize){
-        this. pagesize=pagesize
-        this.getData()
+    sizeChange(pagesize) {
+      this.pagesize = pagesize;
+      this.getData();
     },
     //搜索用户信息
-    search(){
-        this.getData()
+    search() {
+      this.getData();
+    },
+    //打开信息添加的弹窗
+    openAddPage() {
+      this.Adddialog=true
+    },
+    //弹窗的取消按钮（点击后影藏弹窗）
+    visnone(){
+        this.Adddialog=false
+    },
+    //添加用户信息
+    addUser(){
+        this.$http({
+            method:'POST',
+            url:'http://localhost:8888/api/private/v1/users',
+            data:this.addUserMsg,
+            headers: {
+          Authorization: window.localStorage.getItem("token")
+        }
+        }).then(res=>{
+            if(res.data.meta.status===201){
+                this.$message({
+                    message:res.data.meta.msg,
+                    type:'success'
+                })
+                this.getData()
+            }else{
+                this.$message.error(res.data.meta.msg)
+            }
+            //清空输入框数据
+            for (var key in this.addUserMsg) {
+                this.addUserMsg[key]=''
+            }
+            //关闭面板
+            this.Adddialog=false
+        })
     }
   },
   mounted() {

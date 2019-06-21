@@ -14,8 +14,23 @@
 
 <script>
 export default {
-
-}
+  methods: {
+    out() {
+      this.$confirm("您确定退出系统吗 TAT?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.$router.push("/login");
+        window.localStorage.removeItem("token");
+        this.$message({
+          type: "success",
+          message: "退出成功啦 QAQ!"
+        });
+      });
+    }
+  },
+  }
 </script>
 
 <style>
