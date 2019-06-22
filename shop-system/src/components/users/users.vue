@@ -19,20 +19,24 @@
     </el-row>
 
     <!-- 表格 -->
-    <el-table :data="tableData" style="width: 100%">
+    <el-table :data="tableData" style="width: 99%">
       <el-table-column type="index"></el-table-column>
       <el-table-column prop="username" label="姓名" width="180"></el-table-column>
       <el-table-column prop="email" label="邮箱" width="180"></el-table-column>
       <el-table-column prop="mobile" label="电话"></el-table-column>
       <el-table-column prop="mg-state" label="用户状态">
         <template slot-scope="scope">
+          <!-- {{scope.row}} -->
           <el-switch v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" >
+        <template slot-scope="scope">
         <el-button type="primary" icon="el-icon-edit" size="mini" round></el-button>
-        <el-button type="danger" icon="el-icon-delete" size="mini" round></el-button>
+        {{scope.row.id}}
+        <el-button @click.prevent="del(scope.row.id)" type="danger" icon="el-icon-delete" size="mini" round></el-button>
         <el-button type="success" icon="el-icon-check" size="mini" round></el-button>
+        </template>
       </el-table-column>
     </el-table>
     <!-- 分页  current-page当前页 page-sizes页容量-->
@@ -108,6 +112,7 @@ export default {
           Authorization: window.localStorage.getItem('token')
         }
       }).then(res => {
+        // console.log(res);
         const { meta, data } = res.data
         if (meta.status === 200) {
           this.tableData = data.users
@@ -162,6 +167,28 @@ export default {
         }
         // 关闭面板
         this.Adddialog = false
+      })
+    },
+    // 删除用户
+    del (id) {
+      // console.log(id);
+      this.$http({
+        method: 'DELETE',
+        url: `http://localhost:8888/api/private/v1/users/${id}:id`,
+        headers: {
+          Authorization: window.localStorage.getItem('token')
+        }
+      }).then(res => {
+        if (res.data.meta.status === 200) {
+          this.getData()
+          // alert(res.data.meta.msg)
+          this.$message({
+            message: res.data.meta.msg,
+            type: 'success'
+          })
+        } else {
+          this.$message.error(res.data.meta.msg)
+        }
       })
     }
   },
