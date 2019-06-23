@@ -27,12 +27,23 @@
       <el-table-column prop="mg-state" label="用户状态">
         <template slot-scope="scope">
           {{scope.row}}
-          <el-switch v-model="scope.row.mg_state" @change='changer(scope.row.id,scope.row.mg_state)' active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+          <el-switch
+            v-model="scope.row.mg_state"
+            @change="changer(scope.row.id,scope.row.mg_state)"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+          ></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" icon="el-icon-edit" size="mini" round></el-button>
+          <el-button
+            type="primary"
+            @click.prevent="openedit(scope.row.id)"
+            icon="el-icon-edit"
+            size="mini"
+            round
+          ></el-button>
           {{scope.row.id}}
           <el-button
             @click.prevent="del(scope.row.id)"
@@ -41,7 +52,13 @@
             size="mini"
             round
           ></el-button>
-          <el-button type="success" icon="el-icon-check" size="mini" round></el-button>
+          <el-button
+            type="success"
+            @click.prevent="openroles(scope.row.id)"
+            icon="el-icon-check"
+            size="mini"
+            round
+          ></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -77,6 +94,49 @@
         <el-button type="primary" @click.prevent="addUser">确 定</el-button>
       </div>
     </el-dialog>
+    <!-- 弹窗编辑用户信息窗口 -->
+    <el-dialog title="修改用户" :visible.sync="eidtdialog">
+      {{editUserMsg}}
+      <el-form>
+        <el-form-item label="用户名" :label-width="formLabelWidth">
+          <el-input :disabled="true" v-model="editUserMsg.editname" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" :label-width="formLabelWidth">
+          <el-input v-model="editUserMsg.editmail" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="电话" :label-width="formLabelWidth">
+          <el-input v-model="editUserMsg.editphone" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click.prevent="eidtvisnone">取 消</el-button>
+        <el-button @click.prevent="editFn(editUserMsg.id)" type="primary">确 定</el-button>
+      </div>
+    </el-dialog>
+    <!-- 弹窗角色分配信息窗口 -->
+    <el-dialog title="分配角色" :visible.sync="roledialog">
+      {{rolesMsg}}
+      <el-form>
+        <el-form-item label="当前用户" :label-width="formLabelWidth">
+          <el-input :disabled="true" v-model="rolesMsg.rolename" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="请选择角色" :label-width="formLabelWidth">
+          <el-select v-model="rolesMsg.rolerid" placeholder="请选择">
+            <el-option label="请分配角色" :value="-1"></el-option>
+            <el-option
+              v-for="item in selList"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click.prevent="rolesvisinone">取 消</el-button>
+        <el-button type="primary" @click.prevent="rolesFn(rolesMsg.roleid)">确 定</el-button>
+      </div>
+    </el-dialog>
   </el-card>
 </template>
 
@@ -95,16 +155,36 @@ export default {
       pagesizes: [3, 5, 10],
       // 总条数
       total: 0,
-      // 控制弹窗显影
+      // 控制添加用户弹窗显影
       Adddialog: false,
+      //控制编辑用户弹窗显影
+      eidtdialog: false,
+      //控制用户分配角色弹窗显影
+      roledialog: false,
       // 弹窗的宽度
       formLabelWidth: "88px",
+      //添加用户数据源
       addUserMsg: {
         username: "",
         password: "",
         email: "",
         mobile: ""
-      }
+      },
+      //编辑数据数据源
+      editUserMsg: {
+        editname: "",
+        editmail: "",
+        editphone: "",
+        id: ""
+      },
+      //角色分配数据源
+      rolesMsg: {
+        rolename: "",
+        roleid: "",
+        rolerid: ""
+      },
+      //下拉框数据源
+      selList: []
     };
   },
   methods: {
@@ -184,7 +264,6 @@ export default {
     // 删除用户
     del(id) {
       // console.log(id);
-
       this.$confirm("你确定删除吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -211,25 +290,127 @@ export default {
       });
     },
     // 改变用户状态
-    changer(id,type){
+    changer(id, type) {
       this.$http({
-        method:'PUT',
-        url:`http://localhost:8888/api/private/v1/users/${id}/state/${type}`,
+        method: "PUT",
+        url: `http://localhost:8888/api/private/v1/users/${id}/state/${type}`,
         headers: {
-            Authorization: window.localStorage.getItem("token")
-          }
-      }).then(res=>{
-        if(res.data.meta.status==200){
-          this.getData()
+          Authorization: window.localStorage.getItem("token")
+        }
+      }).then(res => {
+        if (res.data.meta.status == 200) {
+          this.getData();
           this.$message({
-            message:res.data.meta.msg,
-            type:'success'
-          })
-        }else{
+            message: res.data.meta.msg,
+            type: "success"
+          });
+        } else {
           this.$message.error(res.data.meta.msg);
         }
-        
-      })
+      });
+    },
+    //打开编辑弹窗
+    openedit(id) {
+      this.editUserMsg.id = id;
+      this.eidtdialog = true;
+      this.$http({
+        method: "GET",
+        url: `http://localhost:8888/api/private/v1/users/${id}`,
+        headers: {
+          Authorization: window.localStorage.getItem("token")
+        }
+      }).then(res => {
+        if (res.data.meta.status == 200) {
+          this.editUserMsg.editname = res.data.data.username;
+          this.editUserMsg.editmail = res.data.data.email;
+          this.editUserMsg.editphone = res.data.data.mobile;
+        }
+      });
+    },
+    //点取消影藏编辑弹窗
+    eidtvisnone() {
+      this.eidtdialog = false;
+    },
+    //点击确定 将编辑的数据提交到服务器并重新渲染页面
+    editFn(id) {
+      this.$http({
+        method: "PUT",
+        url: `http://localhost:8888/api/private/v1/users/${id}`,
+        headers: {
+          Authorization: window.localStorage.getItem("token")
+        },
+        data: {
+          email: this.editUserMsg.editmail,
+          mobile: this.editUserMsg.editphone
+        }
+      }).then(res => {
+        if (res.data.meta.status == 200) {
+          this.eidtdialog = false;
+          this.getData();
+          this.$message({
+            message: res.data.meta.msg,
+            type: "success"
+          });
+        } else {
+          this.$message.error(res.data.meta.msg);
+        }
+      });
+    },
+    //打开分配窗口
+    openroles(id) {
+      this.rolesMsg.id = id;
+      this.roledialog = true;
+      this.$http({
+        method: "GET",
+        url: `http://localhost:8888/api/private/v1/users/${id}`,
+        headers: {
+          Authorization: window.localStorage.getItem("token")
+        }
+      }).then(res => {
+        this.rolesMsg.rolename = res.data.data.username;
+        this.rolesMsg.roleid = res.data.data.id;
+        this.rolesMsg.rolerid = res.data.data.rid;
+      });
+      //获取下拉框数据
+      this.$http({
+        method: "GET",
+        url: "http://localhost:8888/api/private/v1/roles",
+        headers: {
+          Authorization: window.localStorage.getItem("token")
+        }
+      }).then(res => {
+        if (res.data.meta.status == 200) {
+          this.selList = res.data.data;
+        }
+      });
+    },
+    //点击确定 将分配后的数据提交服务器并渲染
+    rolesFn(id) {
+      this.$http({
+        method: "PUT",
+        url: `http://localhost:8888/api/private/v1/users/${id}/role`,
+        headers: {
+          Authorization: window.localStorage.getItem("token")
+        },
+        data: {
+          rid: this.rolesMsg.rolerid
+        }
+      }).then(res => {
+        if (res.data.meta.status == 200) {
+          this.roledialog = false;
+          this.getData();
+          this.$message({
+            message: res.data.meta.msg,
+            type: "success"
+          });
+        } else {
+          this.$message.error(res.data.meta.msg);
+        }
+      });
+    },
+    //点击取消影藏分配窗口
+    rolesvisinone() {
+      this.roledialog = false;
     }
   },
   mounted() {
