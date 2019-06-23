@@ -142,11 +142,11 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       tableData: [],
       // 查询关键字
-      query: "",
+      query: '',
       // 当前页
       pagenum: 1,
       // 页容量
@@ -157,266 +157,239 @@ export default {
       total: 0,
       // 控制添加用户弹窗显影
       Adddialog: false,
-      //控制编辑用户弹窗显影
+      // 控制编辑用户弹窗显影
       eidtdialog: false,
-      //控制用户分配角色弹窗显影
+      // 控制用户分配角色弹窗显影
       roledialog: false,
       // 弹窗的宽度
-      formLabelWidth: "88px",
-      //添加用户数据源
+      formLabelWidth: '88px',
+      // 添加用户数据源
       addUserMsg: {
-        username: "",
-        password: "",
-        email: "",
-        mobile: ""
+        username: '',
+        password: '',
+        email: '',
+        mobile: ''
       },
-      //编辑数据数据源
+      // 编辑数据数据源
       editUserMsg: {
-        editname: "",
-        editmail: "",
-        editphone: "",
-        id: ""
+        editname: '',
+        editmail: '',
+        editphone: '',
+        id: ''
       },
-      //角色分配数据源
+      // 角色分配数据源
       rolesMsg: {
-        rolename: "",
-        roleid: "",
-        rolerid: ""
+        rolename: '',
+        roleid: '',
+        rolerid: ''
       },
-      //下拉框数据源
+      // 下拉框数据源
       selList: []
-    };
+    }
   },
   methods: {
-    getData() {
+    getData () {
       this.$http({
-        method: "GET",
-        url: `http://localhost:8888/api/private/v1/users?query=${
+        method: 'GET',
+        url: `users?query=${
           this.query
-        }&pagenum=${this.pagenum}&pagesize=${this.pagesize}`,
-        headers: {
-          Authorization: window.localStorage.getItem("token")
-        }
+        }&pagenum=${this.pagenum}&pagesize=${this.pagesize}`
       }).then(res => {
         // console.log(res);
-        const { meta, data } = res.data;
-        //判断data中users长度是否为0，为0，页数-1，并且重新获取数据
+        const { meta, data } = res.data
+        // 判断data中users长度是否为0，为0，页数-1，并且重新获取数据
         if (meta.status === 200) {
           if (data.users.length === 0 && this.pagenum !== 1) {
-            this.pagenum--;
-            this.getData();
-            return;
+            this.pagenum--
+            this.getData()
+            return
           }
-          this.tableData = data.users;
+          this.tableData = data.users
           // 得到总条数
-          this.total = data.total;
+          this.total = data.total
         }
-      });
+      })
     },
-    changepage(currentPage) {
+    changepage (currentPage) {
       // console.log(currentPage);
-      this.pagenum = currentPage;
-      this.getData();
+      this.pagenum = currentPage
+      this.getData()
     },
-    sizeChange(pagesize) {
-      this.pagesize = pagesize;
-      this.getData();
+    sizeChange (pagesize) {
+      this.pagesize = pagesize
+      this.getData()
     },
     // 搜索用户信息
-    search() {
-      this.getData();
+    search () {
+      this.getData()
     },
     // 打开信息添加的弹窗
-    openAddPage() {
-      this.Adddialog = true;
+    openAddPage () {
+      this.Adddialog = true
     },
     // 弹窗的取消按钮（点击后影藏弹窗）
-    visnone() {
-      this.Adddialog = false;
+    visnone () {
+      this.Adddialog = false
     },
     // 添加用户信息
-    addUser() {
+    addUser () {
       this.$http({
-        method: "POST",
-        url: "http://localhost:8888/api/private/v1/users",
-        data: this.addUserMsg,
-        headers: {
-          Authorization: window.localStorage.getItem("token")
-        }
+        method: 'POST',
+        url: 'users',
+        data: this.addUserMsg
       }).then(res => {
         if (res.data.meta.status === 201) {
           this.$message({
             message: res.data.meta.msg,
-            type: "success"
-          });
-          this.getData();
+            type: 'success'
+          })
+          this.getData()
         } else {
-          this.$message.error(res.data.meta.msg);
+          this.$message.error(res.data.meta.msg)
         }
         // 清空输入框数据
         for (var key in this.addUserMsg) {
-          this.addUserMsg[key] = "";
+          this.addUserMsg[key] = ''
         }
         // 关闭面板
-        this.Adddialog = false;
-      });
+        this.Adddialog = false
+      })
     },
     // 删除用户
-    del(id) {
+    del (id) {
       // console.log(id);
-      this.$confirm("你确定删除吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('你确定删除吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       }).then(() => {
         this.$http({
-          method: "DELETE",
-          url: `http://localhost:8888/api/private/v1/users/${id}`,
-          headers: {
-            Authorization: window.localStorage.getItem("token")
-          }
+          method: 'DELETE',
+          url: `users/${id}`
         }).then(res => {
           if (res.data.meta.status == 200) {
-            this.getData();
+            this.getData()
             // alert(res.data.meta.msg)
             this.$message({
               message: res.data.meta.msg,
-              type: "success"
-            });
+              type: 'success'
+            })
           } else {
-            this.$message.error(res.data.meta.msg);
+            this.$message.error(res.data.meta.msg)
           }
-        });
-      });
+        })
+      })
     },
     // 改变用户状态
-    changer(id, type) {
+    changer (id, type) {
       this.$http({
-        method: "PUT",
-        url: `http://localhost:8888/api/private/v1/users/${id}/state/${type}`,
-        headers: {
-          Authorization: window.localStorage.getItem("token")
-        }
+        method: 'PUT',
+        url: `users/${id}/state/${type}`
       }).then(res => {
         if (res.data.meta.status == 200) {
-          this.getData();
+          this.getData()
           this.$message({
             message: res.data.meta.msg,
-            type: "success"
-          });
+            type: 'success'
+          })
         } else {
-          this.$message.error(res.data.meta.msg);
+          this.$message.error(res.data.meta.msg)
         }
-      });
+      })
     },
-    //打开编辑弹窗
-    openedit(id) {
-      this.editUserMsg.id = id;
-      this.eidtdialog = true;
+    // 打开编辑弹窗
+    openedit (id) {
+      this.editUserMsg.id = id
+      this.eidtdialog = true
       this.$http({
-        method: "GET",
-        url: `http://localhost:8888/api/private/v1/users/${id}`,
-        headers: {
-          Authorization: window.localStorage.getItem("token")
-        }
+        method: 'GET',
+        url: `users/${id}`
       }).then(res => {
         if (res.data.meta.status == 200) {
-          this.editUserMsg.editname = res.data.data.username;
-          this.editUserMsg.editmail = res.data.data.email;
-          this.editUserMsg.editphone = res.data.data.mobile;
+          this.editUserMsg.editname = res.data.data.username
+          this.editUserMsg.editmail = res.data.data.email
+          this.editUserMsg.editphone = res.data.data.mobile
         }
-      });
+      })
     },
-    //点取消影藏编辑弹窗
-    eidtvisnone() {
-      this.eidtdialog = false;
+    // 点取消影藏编辑弹窗
+    eidtvisnone () {
+      this.eidtdialog = false
     },
-    //点击确定 将编辑的数据提交到服务器并重新渲染页面
-    editFn(id) {
+    // 点击确定 将编辑的数据提交到服务器并重新渲染页面
+    editFn (id) {
       this.$http({
-        method: "PUT",
-        url: `http://localhost:8888/api/private/v1/users/${id}`,
-        headers: {
-          Authorization: window.localStorage.getItem("token")
-        },
+        method: 'PUT',
+        url: `users/${id}`,
         data: {
           email: this.editUserMsg.editmail,
           mobile: this.editUserMsg.editphone
         }
       }).then(res => {
         if (res.data.meta.status == 200) {
-          this.eidtdialog = false;
-          this.getData();
+          this.eidtdialog = false
+          this.getData()
           this.$message({
             message: res.data.meta.msg,
-            type: "success"
-          });
+            type: 'success'
+          })
         } else {
-          this.$message.error(res.data.meta.msg);
+          this.$message.error(res.data.meta.msg)
         }
-      });
+      })
     },
-    //打开分配窗口
-    openroles(id) {
-      this.rolesMsg.id = id;
-      this.roledialog = true;
+    // 打开分配窗口
+    openroles (id) {
+      this.rolesMsg.id = id
+      this.roledialog = true
       this.$http({
-        method: "GET",
-        url: `http://localhost:8888/api/private/v1/users/${id}`,
-        headers: {
-          Authorization: window.localStorage.getItem("token")
-        }
+        method: 'GET',
+        url: `users/${id}`
       }).then(res => {
-        this.rolesMsg.rolename = res.data.data.username;
-        this.rolesMsg.roleid = res.data.data.id;
-        this.rolesMsg.rolerid = res.data.data.rid;
-      });
-      //获取下拉框数据
+        this.rolesMsg.rolename = res.data.data.username
+        this.rolesMsg.roleid = res.data.data.id
+        this.rolesMsg.rolerid = res.data.data.rid
+      })
+      // 获取下拉框数据
       this.$http({
-        method: "GET",
-        url: "http://localhost:8888/api/private/v1/roles",
-        headers: {
-          Authorization: window.localStorage.getItem("token")
-        }
+        method: 'GET',
+        url: 'roles'
       }).then(res => {
         if (res.data.meta.status == 200) {
-          this.selList = res.data.data;
+          this.selList = res.data.data
         }
-      });
+      })
     },
-    //点击确定 将分配后的数据提交服务器并渲染
-    rolesFn(id) {
+    // 点击确定 将分配后的数据提交服务器并渲染
+    rolesFn (id) {
       this.$http({
-        method: "PUT",
-        url: `http://localhost:8888/api/private/v1/users/${id}/role`,
-        headers: {
-          Authorization: window.localStorage.getItem("token")
-        },
+        method: 'PUT',
+        url: `users/${id}/role`,
         data: {
           rid: this.rolesMsg.rolerid
         }
       }).then(res => {
         if (res.data.meta.status == 200) {
-          this.roledialog = false;
-          this.getData();
+          this.roledialog = false
+          this.getData()
           this.$message({
             message: res.data.meta.msg,
-            type: "success"
-          });
+            type: 'success'
+          })
         } else {
-          this.$message.error(res.data.meta.msg);
+          this.$message.error(res.data.meta.msg)
         }
-      });
+      })
     },
-    //点击取消影藏分配窗口
-    rolesvisinone() {
-      this.roledialog = false;
+    // 点击取消影藏分配窗口
+    rolesvisinone () {
+      this.roledialog = false
     }
   },
-  mounted() {
-    this.getData();
+  mounted () {
+    this.getData()
   }
-};
+}
 </script>
 
 <style>
