@@ -114,7 +114,13 @@ export default {
       }).then(res => {
         // console.log(res);
         const { meta, data } = res.data
+        //判断data中users长度是否为0，为0，页数-1，并且重新获取数据
         if (meta.status === 200) {
+          if(data.users.length===0&&this.pagenum!==1){
+            this.pagenum--
+            this.getData()
+            return;
+          }
           this.tableData = data.users
           // 得到总条数
           this.total = data.total
@@ -186,9 +192,6 @@ export default {
             message: res.data.meta.msg,
             type: 'success'
           })
-          //当最后一页只有一条数据解决bug 当前页-1并且重新渲染数据
-          this.pagenum--
-          this.getData()
         } else {
           this.$message.error(res.data.meta.msg)
         }
