@@ -24,9 +24,9 @@
       <el-table-column prop="username" label="姓名" width="180"></el-table-column>
       <el-table-column prop="email" label="邮箱" width="180"></el-table-column>
       <el-table-column prop="mobile" label="电话"></el-table-column>
-      <el-table-column prop="mg-state" label="用户状态" >
+      <el-table-column prop="mg-state" label="用户状态">
         <template slot-scope="scope">
-          {{scope.row}}
+          <!-- {{scope.row}} -->
           <el-switch v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
         </template>
       </el-table-column>
@@ -84,7 +84,7 @@ export default {
       // 当前页
       pagenum: 1,
       // 页容量
-      pagesize: 5,
+      pagesize: 3,
       // 容量选项
       pagesizes: [3, 5, 10],
       // 总条数
@@ -179,22 +179,18 @@ export default {
           Authorization: window.localStorage.getItem('token')
         }
       }).then(res => {
-        if (res.data.meta.status == 200) {
+        if (res.data.meta.status === 200) {
           this.getData()
           // alert(res.data.meta.msg)
           this.$message({
             message: res.data.meta.msg,
             type: 'success'
           })
-          //当最后一页只有一条数据解决bug 当前页-1并且重新渲染数据
-          this.pagenum--
-          this.getData()
         } else {
           this.$message.error(res.data.meta.msg)
         }
       })
-    },
-
+    }
   },
   mounted () {
     this.getData()
