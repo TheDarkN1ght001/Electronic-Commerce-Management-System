@@ -16,7 +16,7 @@
 
     <!-- 表格 -->
     <el-table :data="tableData" style="width: 99%">
-      <el-table-column type="index"></el-table-column>
+      <el-table-column type="index"></el-table-column>【
       <el-table-column prop="username" label="姓名" width="180"></el-table-column>
       <el-table-column prop="email" label="邮箱" width="180"></el-table-column>
       <el-table-column prop="mobile" label="电话"></el-table-column>
