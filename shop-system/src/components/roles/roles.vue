@@ -48,7 +48,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click.prevent="eidtvisnone">取 消</el-button>
-        <el-button type="primary">确 定</el-button>
+        <el-button @click.prevent="editMsgFn(editMsg.roleId)" type="primary">确 定</el-button>
       </div>
     </el-dialog>
     <!-- 弹窗添加用户信息窗口 -->
@@ -151,6 +151,28 @@ export default {
           this.editMsg.roleId = res.data.data.roleId
           this.editMsg.roleName = res.data.data.roleName
           this.editMsg.roleDesc = res.data.data.roleDesc
+        }
+      })
+    },
+    //编辑角色后提交到服务器并渲染
+    editMsgFn(id){
+      this.$http({
+        method:'put',
+        url:`roles/${id}`,
+        data:{
+          roleName:this.editMsg.roleName,
+          roleDesc:this.editMsg.roleDesc
+        }
+      }).then(res=>{
+        if(res.data.meta.status==200){
+          this.eidtdialog=false
+           this.$message({
+            message: res.data.meta.msg,
+            type: 'success'
+          })
+          this.getData()
+        }else{
+          this.$message.error(res.data.meta.msg)
         }
       })
     },
