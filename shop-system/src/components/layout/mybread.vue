@@ -10,8 +10,8 @@
 
 <script>
 export default {
-    name:'mybread',//给当前组件设置名称
-    props:['one','two']//子收
+  name: 'mybread', // 给当前组件设置名称
+  props: ['one', 'two']// 子收
 
 }
 </script>

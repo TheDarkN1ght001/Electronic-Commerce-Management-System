@@ -37,7 +37,7 @@ export default {
     }
   },
   methods: {
-    login () {                        
+    login () {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
           this.$http({

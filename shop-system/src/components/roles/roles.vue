@@ -21,6 +21,7 @@
             round
           ></el-button>
           <el-button
+            @click.prevent="del(scope.row.id)"
             type="danger"
             icon="el-icon-delete"
             size="mini"
@@ -80,8 +81,8 @@ export default {
       dataList: [],
       // 弹窗的宽度
       formLabelWidth: '88px',
-      //添加弹窗显影
-      adddialog:false,
+      // 添加弹窗显影
+      adddialog: false,
       // 编辑弹窗显影
       eidtdialog: false,
       // 修改数据源
@@ -90,10 +91,10 @@ export default {
         roleName: '',
         roleDesc: ''
       },
-      //添加数据源
-      addMsg:{
-        roleName:'',
-        roleDesc:''
+      // 添加数据源
+      addMsg: {
+        roleName: '',
+        roleDesc: ''
       }
 
     }
@@ -109,36 +110,37 @@ export default {
         this.dataList = res.data.data
       })
     },
-    //打开添加角色弹窗
-    openadd(){
-      this.adddialog=true
+    // 打开添加角色弹窗
+    openadd () {
+      //每次打开清空之前的内容
+      this.addMsg = {}
+      this.adddialog = true
     },
-    //添加角色信息提交到服务器并渲染
-    addMsgFn(){
+    // 添加角色信息提交到服务器并渲染
+    addMsgFn () {
       this.$http({
-        method:'POST',
-        url:`roles`,
-        data:{
-          roleName:this.addMsg.roleName,
-          roleDesc:this.addMsg.roleDesc
+        method: 'POST',
+        url: `roles`,
+        data: {
+          roleName: this.addMsg.roleName,
+          roleDesc: this.addMsg.roleDesc
         }
-      }).then(res=>{
-        if(res.data.meta.status==201){
-      this.adddialog=false
-           this.$message({
+      }).then(res => {
+        if (res.data.meta.status == 201) {
+          this.adddialog = false
+          this.$message({
             message: res.data.meta.msg,
             type: 'success'
           })
           this.getData()
-        }else{
+        } else {
           this.$message.error(res.data.meta.msg)
         }
-        
       })
     },
-    //点击取消关闭添加弹窗
-    addvisnone(){
-      this.adddialog=false
+    // 点击取消关闭添加弹窗
+    addvisnone () {
+      this.adddialog = false
     },
     // 打开编辑弹框
     openedit (id) {
@@ -154,24 +156,24 @@ export default {
         }
       })
     },
-    //编辑角色后提交到服务器并渲染
-    editMsgFn(id){
+    // 编辑角色后提交到服务器并渲染
+    editMsgFn (id) {
       this.$http({
-        method:'put',
-        url:`roles/${id}`,
-        data:{
-          roleName:this.editMsg.roleName,
-          roleDesc:this.editMsg.roleDesc
+        method: 'put',
+        url: `roles/${id}`,
+        data: {
+          roleName: this.editMsg.roleName,
+          roleDesc: this.editMsg.roleDesc
         }
-      }).then(res=>{
-        if(res.data.meta.status==200){
-          this.eidtdialog=false
-           this.$message({
+      }).then(res => {
+        if (res.data.meta.status == 200) {
+          this.eidtdialog = false
+          this.$message({
             message: res.data.meta.msg,
             type: 'success'
           })
           this.getData()
-        }else{
+        } else {
           this.$message.error(res.data.meta.msg)
         }
       })
@@ -179,13 +181,30 @@ export default {
     // 点击取消关闭编辑弹窗
     eidtvisnone () {
       this.eidtdialog = false
+    },
+    // 角色删除
+    del (id) {
+      this.$http({
+        method: 'DELETE',
+        url: `roles/${id}`
+      }).then(res => {
+        if (res.data.meta.status == 200) {
+          this.$message({
+            message: res.data.meta.msg,
+            type: 'success'
+          })
+          this.getData()
+        } else {
+          this.$message.error(res.data.meta.msg)
+        }
+      })
     }
   },
   mounted () {
     this.getData()
   },
-  components:{
-    Mybread:Mybread
+  components: {
+    Mybread: Mybread
   }
 }
 </script>

@@ -386,8 +386,8 @@ export default {
   mounted () {
     this.getData()
   },
-  components:{
-    Mybread:Mybread
+  components: {
+    Mybread: Mybread
   }
 }
 </script>

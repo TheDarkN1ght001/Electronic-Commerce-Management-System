@@ -24,7 +24,7 @@
 </template>
 
 <script>
-//引入封装的面包屑导航
+// 引入封装的面包屑导航
 import Mybread from '../layout/mybread'
 
 export default {
@@ -46,9 +46,9 @@ export default {
   mounted () {
     this.getdata()
   },
-  //注册面包组件
-  components:{
-    Mybread:Mybread
+  // 注册面包组件
+  components: {
+    Mybread: Mybread
   }
 }
 </script>
