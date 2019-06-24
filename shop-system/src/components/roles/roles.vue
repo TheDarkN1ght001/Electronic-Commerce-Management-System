@@ -2,13 +2,7 @@
     <div>
       <el-card>
         <!-- 面包屑导航 -->
-         <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>
-        权限管理
-      </el-breadcrumb-item>
-      <el-breadcrumb-item>角色列表</el-breadcrumb-item>
-    </el-breadcrumb>
+         <Mybread one='权限管理' two='角色列表'></Mybread>
     <!-- 添加角色按钮 -->
     <el-button type="success" round class="mybtn">添加角色</el-button>
     <!-- 表格 -->
@@ -62,6 +56,7 @@
 </template>
 
 <script>
+import Mybread from '../layout/mybread'
 export default {
   data () {
     return {
@@ -112,6 +107,9 @@ export default {
   },
   mounted () {
     this.getData()
+  },
+  components:{
+    Mybread:Mybread
   }
 }
 </script>
