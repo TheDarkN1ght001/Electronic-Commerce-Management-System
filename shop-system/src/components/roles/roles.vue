@@ -1,10 +1,11 @@
 <template>
     <div>
+      <el-card>
         <!-- 面包屑导航 -->
          <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>
-        <a href="/">权限管理</a>
+        权限管理
       </el-breadcrumb-item>
       <el-breadcrumb-item>角色列表</el-breadcrumb-item>
     </el-breadcrumb>
@@ -56,6 +57,7 @@
         <el-button type="primary">确 定</el-button>
       </div>
     </el-dialog>
+    </el-card>
     </div>
 </template>
 
