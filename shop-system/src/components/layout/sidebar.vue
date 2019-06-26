@@ -42,7 +42,7 @@
               <span>商品管理</span>
             </template>
 
-              <el-menu-item index="goods">
+              <el-menu-item index="没改完！！！">
                 <i class="el-icon-menu"></i>
                 商品列表
                 </el-menu-item>
@@ -50,7 +50,7 @@
                 <i class="el-icon-menu"></i>
                 分类参数
                 </el-menu-item>
-                <el-menu-item index="3-3">
+                <el-menu-item index="categories">
                 <i class="el-icon-menu"></i>
                 商品分类
                 </el-menu-item>
