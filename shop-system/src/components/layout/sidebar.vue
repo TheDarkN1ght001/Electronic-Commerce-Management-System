@@ -42,7 +42,7 @@
               <span>商品管理</span>
             </template>
 
-              <el-menu-item index="3-1">
+              <el-menu-item index="goods">
                 <i class="el-icon-menu"></i>
                 商品列表
                 </el-menu-item>

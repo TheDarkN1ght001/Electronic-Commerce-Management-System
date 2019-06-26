@@ -392,11 +392,10 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+/*让样式只在当前组件中起作用*/
 .myrow {
   margin-top: 25px;
 }
-.mybtn {
-  margin-left: 20px;
-}
+
 </style>
