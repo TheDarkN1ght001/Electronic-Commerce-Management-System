@@ -28,7 +28,7 @@
         <template slot-scope="scope">
             {{scope.row.cat_id}}
           <el-button type="primary" @click.prevent="openEdit(scope.row.cat_id)" icon="el-icon-edit" plain size="mini"></el-button>
-          <el-button type="danger" icon="el-icon-delete" plain size="mini"></el-button>
+          <el-button type="danger" @click.prevent='del(scope.row.cat_id)' icon="el-icon-delete" plain size="mini"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -107,7 +107,7 @@ export default {
         label: "cat_name", // 选中的文本
         value: "cat_id" // 对应的值
       },
-      // 分类数据
+      // 添加分类数据
       cateName: "",
       //编辑弹窗显影
       editdialog:false,
@@ -171,6 +171,7 @@ export default {
     // 打开新增面板，动态加载级联数据
     openAdd() {
       this.addDialog = true;
+        
     },
     // 得眰二级分类数据
     getTwoData() {
@@ -211,6 +212,8 @@ export default {
             message: meta.msg,
             type: "success"
           });
+          //每次点击确定之后清空上次输入的分类数据
+          this.cateName=''
         } else {
           this.$message.error(meta.msg);
         }
@@ -249,15 +252,32 @@ export default {
             type: 'success'
           })
           this.getCategoriesList()
+          this.editMsg=''
             }else{
           this.$message.error(res.data.meta.msg)
             }
         })
-        
     },
     //点击取消影藏编辑弹窗
     editvisnone(){
         this.editdialog=false
+    },
+    //删除分类
+    del(id){
+        this.$http({
+            method:'DELETE',
+            url:`categories/${id}`
+        }).then(res=>{
+            if(res.data.meta.status==200){
+                this.$message({
+            message: res.data.meta.msg,
+            type: 'success'
+          })
+          this.getCategoriesList()
+            }else{
+          this.$message.error(res.data.meta.msg)
+            }
+        })
     }
   },
   mounted() {
