@@ -8,6 +8,9 @@ import Users from '../components/users/users.vue'
 import Roles from '../components/roles/roles.vue'
 import Right from '../components/right/right.vue'
 import Goods from '../components/goods/goods.vue'
+
+//在组件之外使用elment ui的message方法
+import { Message } from 'element-ui'
 Vue.use(Router)
 
 let router = new Router({
@@ -17,7 +20,7 @@ let router = new Router({
     // 添加一个login路由
     { path: '/login', name: 'login', component: Login },
     // 添加主页home路由
-    { path: '/', name: 'home', component: Home, children: [{ path: '/users', component: Users }, { path: '/roles', component: Roles }, { path: '/right', component: Right }, { path: '/goods', component: Goods }] }
+    { path: '/', name: 'home', component: Home, children: [{ path: '/users', component: Users }, { path: '/roles', component: Roles }, { path: '/right', component: Right },{ path: '/goods', component: Goods }] }
 
   ]
 })
@@ -35,6 +38,7 @@ router.beforeEach(function (to, from, next) {
       // 跳转到login路由
       // this.$router.push('/login')//这种写法是在vue组件中写的 这个this指的是vue实例 此处不能这样写
       router.push('/login')
+      Message.error('请先登录')
     } else {
       next()
     }
