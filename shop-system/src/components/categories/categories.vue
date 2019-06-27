@@ -120,7 +120,7 @@ export default {
   components: {
     mybread: mybread
   },
-  methods: {
+  methods: { 
     // 得到所有的分类数据
     getCategoriesList() {
       this.$http({
