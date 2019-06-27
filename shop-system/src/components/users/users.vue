@@ -264,7 +264,7 @@ export default {
           method: 'DELETE',
           url: `users/${id}`
         }).then(res => {
-          if (res.data.meta.status == 200) {
+          if (res.data.meta.status === 200) {
             this.getData()
             // alert(res.data.meta.msg)
             this.$message({
@@ -283,7 +283,7 @@ export default {
         method: 'PUT',
         url: `users/${id}/state/${type}`
       }).then(res => {
-        if (res.data.meta.status == 200) {
+        if (res.data.meta.status === 200) {
           this.getData()
           this.$message({
             message: res.data.meta.msg,
@@ -302,7 +302,7 @@ export default {
         method: 'GET',
         url: `users/${id}`
       }).then(res => {
-        if (res.data.meta.status == 200) {
+        if (res.data.meta.status === 200) {
           this.editUserMsg.editname = res.data.data.username
           this.editUserMsg.editmail = res.data.data.email
           this.editUserMsg.editphone = res.data.data.mobile
@@ -323,7 +323,7 @@ export default {
           mobile: this.editUserMsg.editphone
         }
       }).then(res => {
-        if (res.data.meta.status == 200) {
+        if (res.data.meta.status === 200) {
           this.eidtdialog = false
           this.getData()
           this.$message({
@@ -352,7 +352,7 @@ export default {
         method: 'GET',
         url: 'roles'
       }).then(res => {
-        if (res.data.meta.status == 200) {
+        if (res.data.meta.status === 200) {
           this.selList = res.data.data
         }
       })
@@ -366,7 +366,7 @@ export default {
           rid: this.rolesMsg.rolerid
         }
       }).then(res => {
-        if (res.data.meta.status == 200) {
+        if (res.data.meta.status === 200) {
           this.roledialog = false
           this.getData()
           this.$message({

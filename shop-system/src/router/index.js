@@ -6,13 +6,13 @@ import Useelement from '../components/useelement/useelement.vue'
 import Home from '../components/home/home.vue'
 import Users from '../components/users/users.vue'
 import Roles from '../components/roles/roles.vue'
-import Right from '../components/right/right.vue'
+import Rights from '../components/right/rights.vue'
 import Goods from '../components/goods/goods.vue'
 import Categories from '../components/categories/categories.vue'
-//使用到 element-ui 中的一个插件：element-tree-grid
+// 使用到 element-ui 中的一个插件：element-tree-grid
 import userTreeGrid from '../components/useelement/userTreeGrid.vue'
 
-//在组件之外使用elment ui的message方法
+// 在组件之外使用elment ui的message方法
 import { Message } from 'element-ui'
 Vue.use(Router)
 
@@ -22,13 +22,13 @@ let router = new Router({
     { path: '/useelement', name: 'useelement', component: Useelement },
     // 添加一个login路由
     { path: '/login', name: 'login', component: Login },
-    //使用到 element-ui 中的一个插件：element-tree-grid
+    // 使用到 element-ui 中的一个插件：element-tree-grid
     {
       path: '/userTreeGrid',
       component: userTreeGrid
     },
     // 添加主页home路由
-    { path: '/', name: 'home', component: Home, children: [{ path: '/users', component: Users }, { path: '/roles', component: Roles }, { path: '/right', component: Right },{ path: '/goods', component: Goods },{ path: '/categories', component: Categories }] }
+    { path: '/', name: 'home', component: Home, children: [{ path: '/users', component: Users }, { path: '/roles', component: Roles }, { path: '/rights', component: Rights }, { path: '/goods', component: Goods }, { path: '/categories', component: Categories }] }
 
   ]
 })

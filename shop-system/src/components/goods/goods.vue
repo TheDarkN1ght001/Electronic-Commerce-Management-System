@@ -27,12 +27,14 @@
         <template slot-scope="scope">
           {{scope.row.goods_id}}
           <el-button
+            @click.prevent='edit'
             type="primary"
             icon="el-icon-edit"
             size="mini"
             round
           ></el-button>
           <el-button
+            @click.prevent='del'
             type="danger"
             icon="el-icon-delete"
             size="mini"
@@ -59,15 +61,15 @@
 import Mybread from '../layout/mybread'
 
 export default {
-  data() {
+  data () {
     return {
       tableData: [],
       // 查询关键字
       query: '',
       // 当前页
-      pagenum:1,
+      pagenum: 1,
       // 页容量
-      pagesize:10,
+      pagesize: 10,
       // 容量选项
       pagesizes: [10, 15, 20],
       // 总条数
@@ -75,22 +77,22 @@ export default {
     }
   },
   methods: {
-    getData(){
+    getData () {
       this.$http({
-        method:'GET',
-        url:`goods?pagenum=${this.pagenum}&pagesize=${this.pagesize}&query=${this.query}`,
-      }).then(res=>{
-        const{meta,data}=res.data
-        if(meta.status===200){
+        method: 'GET',
+        url: `goods?pagenum=${this.pagenum}&pagesize=${this.pagesize}&query=${this.query}`
+      }).then(res => {
+        const {meta, data} = res.data
+        if (meta.status === 200) {
         // 判断data中goods长度是否为0，为0，页数-1，并且重新获取数据
-          if(data.goods.length===0&&this.pagenum!==1){
+          if (data.goods.length === 0 && this.pagenum !== 1) {
             this.pagenum--
             this.getData()
             return
           }
-          this.tableData=data.goods
-          //得到总条数
-          this.total=data.total
+          this.tableData = data.goods
+          // 得到总条数
+          this.total = data.total
         }
       })
     },
@@ -107,8 +109,14 @@ export default {
     search () {
       this.getData()
     },
+    edit () {
+      this.$message.error('别点了，懒得做')
+    },
+    del () {
+      this.$message.error('这个也懒得做')
+    }
   },
-  mounted() {
+  mounted () {
     this.getData()
   },
   components: {

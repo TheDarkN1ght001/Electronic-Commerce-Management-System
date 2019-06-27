@@ -187,7 +187,7 @@ export default {
           roleDesc: this.addMsg.roleDesc
         }
       }).then(res => {
-        if (res.data.meta.status == 201) {
+        if (res.data.meta.status === 201) {
           this.adddialog = false
           this.$message({
             message: res.data.meta.msg,
@@ -210,7 +210,7 @@ export default {
         method: 'GET',
         url: `roles/${id}`
       }).then(res => {
-        if (res.data.meta.status == 200) {
+        if (res.data.meta.status === 200) {
           this.editMsg.roleId = res.data.data.roleId
           this.editMsg.roleName = res.data.data.roleName
           this.editMsg.roleDesc = res.data.data.roleDesc
@@ -227,7 +227,7 @@ export default {
           roleDesc: this.editMsg.roleDesc
         }
       }).then(res => {
-        if (res.data.meta.status == 200) {
+        if (res.data.meta.status === 200) {
           this.eidtdialog = false
           this.$message({
             message: res.data.meta.msg,
@@ -249,7 +249,7 @@ export default {
         method: 'DELETE',
         url: `roles/${id}`
       }).then(res => {
-        if (res.data.meta.status == 200) {
+        if (res.data.meta.status === 200) {
           this.$message({
             message: res.data.meta.msg,
             type: 'success'

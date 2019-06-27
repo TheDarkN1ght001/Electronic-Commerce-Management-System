@@ -77,9 +77,9 @@
 </template>
 
 <script>
-import mybread from "../layout/mybread";
+import mybread from '../layout/mybread'
 export default {
-  data() {
+  data () {
     return {
       loading: true,
       // 表格的数据源
@@ -95,7 +95,7 @@ export default {
       // 对话框的控制属性
       addDialog: false,
       // 标题宽度
-      formLabelWidth: "80px",
+      formLabelWidth: '80px',
       // 级联框绑定的数据
       selValue: [],
       // 级联框的数据源
@@ -103,190 +103,189 @@ export default {
       // 级联框的配置项
       propsObj: {
         checkStrictly: true, // 是否可以选择一项
-        expandTrigger: "hover", // 触发的方式
-        label: "cat_name", // 选中的文本
-        value: "cat_id" // 对应的值
+        expandTrigger: 'hover', // 触发的方式
+        label: 'cat_name', // 选中的文本
+        value: 'cat_id' // 对应的值
       },
       // 添加分类数据
-      cateName: "",
-      //编辑弹窗显影
-      editdialog:false,
-      //对应的id
-      catid:0,
-      //双向绑定修改弹窗中得数据
-      editMsg:''
-    };
+      cateName: '',
+      // 编辑弹窗显影
+      editdialog: false,
+      // 对应的id
+      catid: 0,
+      // 双向绑定修改弹窗中得数据
+      editMsg: ''
+    }
   },
   components: {
     mybread: mybread
   },
-  methods: { 
+  methods: {
     // 得到所有的分类数据
-    getCategoriesList() {
+    getCategoriesList () {
       this.$http({
-        method: "GET",
-        url: "categories"
+        method: 'GET',
+        url: 'categories'
       }).then(res => {
-        let { meta, data } = res.data;
+        let { meta, data } = res.data
         if (meta.status === 200) {
           // 将数据进行保存
-          this.categoriesList = data;
+          this.categoriesList = data
           // 设置数据总长度
-          this.total = this.categoriesList.length;
+          this.total = this.categoriesList.length
           // 给分页数据赋值
-          this.getPageList();
+          this.getPageList()
           // 关闭 loading
           setTimeout(() => {
-            this.loading = false;
-          }, 1000);
+            this.loading = false
+          }, 1000)
         } else {
-          this.$message.error(meta.msg);
+          this.$message.error(meta.msg)
         }
-      });
+      })
     },
     // 根据数据源得到分页的数据
-    getPageList() {
+    getPageList () {
       // this.pageList =
       // 得到开始的下标
-      let begin = this.pagesize * (this.pagenum - 1);
+      let begin = this.pagesize * (this.pagenum - 1)
       // 结束的下标
-      let end = this.pagesize * this.pagenum;
+      let end = this.pagesize * this.pagenum
       // 根据下标去数组中取得数据
-      this.pageList = this.categoriesList.slice(begin, end);
+      this.pageList = this.categoriesList.slice(begin, end)
     },
     // 当前页发生了改变
     //  currentPage：当前页
-    curChange(currentPage) {
-      this.pagenum = currentPage;
+    curChange (currentPage) {
+      this.pagenum = currentPage
       // 重新获取数据
-      this.getPageList();
+      this.getPageList()
     },
     // 当页容量改变时
-    sizeChange(pagesize) {
+    sizeChange (pagesize) {
       // 赋值
-      this.pagesize = pagesize;
+      this.pagesize = pagesize
       // 重新获取数据
-      this.getPageList();
+      this.getPageList()
     },
     // 打开新增面板，动态加载级联数据
-    openAdd() {
-      this.addDialog = true;
-        
+    openAdd () {
+      this.addDialog = true
     },
     // 得眰二级分类数据
-    getTwoData() {
+    getTwoData () {
       this.$http({
-        method: "GET",
+        method: 'GET',
         url: `categories?type=2`
       }).then(res => {
-        let { meta, data } = res.data;
+        let { meta, data } = res.data
         if (meta.status === 200) {
           // 将数据保存起来
-          this.selList = data;
+          this.selList = data
         } else {
-          this.$message.error(meta.msg);
+          this.$message.error(meta.msg)
         }
-      });
+      })
     },
     // 新增分类
-    addCateFn() {
+    addCateFn () {
       // 得到当前分类的父 id
       let pid =
         this.selValue.length === 0
           ? 0
-          : this.selValue[this.selValue.length - 1];
+          : this.selValue[this.selValue.length - 1]
       // 得到当前 层级
-      let level = this.selValue.length;
+      let level = this.selValue.length
       this.$http({
-        method: "POST",
-        url: "categories",
+        method: 'POST',
+        url: 'categories',
         data: {
           cat_pid: pid, // 父元素的 id
           cat_name: this.cateName,
           cat_level: level
         }
       }).then(res => {
-        let { meta } = res.data;
+        let { meta } = res.data
         if (meta.status === 201) {
           this.$message({
             message: meta.msg,
-            type: "success"
-          });
-          //每次点击确定之后清空上次输入的分类数据
-          this.cateName=''
+            type: 'success'
+          })
+          // 每次点击确定之后清空上次输入的分类数据
+          this.cateName = ''
         } else {
-          this.$message.error(meta.msg);
+          this.$message.error(meta.msg)
         }
-      this.addDialog=false
-    this.getCategoriesList()
-      });
+        this.addDialog = false
+        this.getCategoriesList()
+      })
     },
-    //点击编辑按钮显示编辑弹窗
-    openEdit(id){
-        this.catid=id
-        this.editdialog=true
-        this.$http({
-            method:'GET',
-            url:`categories/${id}`
-        }).then(res=>{
-            if(res.data.meta.status==200){
-                this.editMsg=res.data.data.cat_name
-            }else{
-            this.$message.error(res.data.meta.msg)                
-            }
-        })
+    // 点击编辑按钮显示编辑弹窗
+    openEdit (id) {
+      this.catid = id
+      this.editdialog = true
+      this.$http({
+        method: 'GET',
+        url: `categories/${id}`
+      }).then(res => {
+        if (res.data.meta.status === 200) {
+          this.editMsg = res.data.data.cat_name
+        } else {
+          this.$message.error(res.data.meta.msg)
+        }
+      })
     },
-    //点击确定后将编辑后的数据提交到服务器并渲染
-    editMsgFn(id){
-        this.$http({
-            method:'PUT',
-            url:`categories/${id}`,
-            data:{
-                cat_name:this.editMsg
-            }
-        }).then(res=>{
-            if(res.data.meta.status==200){
-                this.editdialog = false
+    // 点击确定后将编辑后的数据提交到服务器并渲染
+    editMsgFn (id) {
+      this.$http({
+        method: 'PUT',
+        url: `categories/${id}`,
+        data: {
+          cat_name: this.editMsg
+        }
+      }).then(res => {
+        if (res.data.meta.status === 200) {
+          this.editdialog = false
           this.$message({
             message: res.data.meta.msg,
             type: 'success'
           })
           this.getCategoriesList()
-          this.editMsg=''
-            }else{
+          this.editMsg = ''
+        } else {
           this.$message.error(res.data.meta.msg)
-            }
-        })
+        }
+      })
     },
-    //点击取消影藏编辑弹窗
-    editvisnone(){
-        this.editdialog=false
+    // 点击取消影藏编辑弹窗
+    editvisnone () {
+      this.editdialog = false
     },
-    //删除分类
-    del(id){
-        this.$http({
-            method:'DELETE',
-            url:`categories/${id}`
-        }).then(res=>{
-            if(res.data.meta.status==200){
-                this.$message({
+    // 删除分类
+    del (id) {
+      this.$http({
+        method: 'DELETE',
+        url: `categories/${id}`
+      }).then(res => {
+        if (res.data.meta.status === 200) {
+          this.$message({
             message: res.data.meta.msg,
             type: 'success'
           })
           this.getCategoriesList()
-            }else{
+        } else {
           this.$message.error(res.data.meta.msg)
-            }
-        })
+        }
+      })
     }
   },
-  mounted() {
+  mounted () {
     // 获取所有分类
-    this.getCategoriesList();
+    this.getCategoriesList()
     // 获取二级分类
-    this.getTwoData();
+    this.getTwoData()
   }
-};
+}
 </script>
 
 <style scoped>
