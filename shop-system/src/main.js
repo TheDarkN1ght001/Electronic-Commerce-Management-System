@@ -12,6 +12,14 @@ import ElTreeGrid from 'element-tree-grid'
 // 引入myaxios
 import myaxios from './assets/js/myaxios'
 
+// 引入富文本编辑框
+import VueQuillEditor from 'vue-quill-editor'
+
+// require styles
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+Vue.use(VueQuillEditor /* { default global options } */)
 // 使用element
 Vue.use(Element)
 // 使用myaxios

@@ -9,8 +9,11 @@ import Roles from '../components/roles/roles.vue'
 import Rights from '../components/right/rights.vue'
 import Goods from '../components/goods/goods.vue'
 import Categories from '../components/categories/categories.vue'
+
 // 使用到 element-ui 中的一个插件：element-tree-grid
 import userTreeGrid from '../components/useelement/userTreeGrid.vue'
+// 引入goodsadd
+import Goodsadd from '../components/goodsadd/goodsadd.vue'
 
 // 在组件之外使用elment ui的message方法
 import { Message } from 'element-ui'
@@ -28,7 +31,7 @@ let router = new Router({
       component: userTreeGrid
     },
     // 添加主页home路由
-    { path: '/', name: 'home', component: Home, children: [{ path: '/users', component: Users }, { path: '/roles', component: Roles }, { path: '/rights', component: Rights }, { path: '/goods', component: Goods }, { path: '/categories', component: Categories }] }
+    { path: '/', name: 'home', component: Home, children: [{ path: '/users', component: Users }, { path: '/roles', component: Roles }, { path: '/rights', component: Rights }, { path: '/goods', component: Goods }, { path: '/categories', component: Categories }, { path: '/goods/Add', component: Goodsadd }] }
 
   ]
 })

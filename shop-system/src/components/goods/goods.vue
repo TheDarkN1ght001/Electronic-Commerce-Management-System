@@ -11,7 +11,7 @@
         </el-input>
       </el-col>
       <el-col :span="4">
-        <el-button type="success" plain class="mybtn" @click.prevent="openAddPage">添加按钮</el-button>
+        <el-button type="success" plain class="mybtn" @click.prevent='$router.push("goods/Add")' >添加商品</el-button>
       </el-col>
     </el-row>
     <!-- 表格 -->

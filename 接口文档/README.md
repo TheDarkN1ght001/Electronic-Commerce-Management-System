@@ -1077,7 +1077,7 @@ type=tree
 
 ### 添加商品
 
-* 请求路径：ccc
+* 请求路径：goods
 * 请求方法：post
 * 请求参数
 
@@ -1809,18 +1809,18 @@ brew install GraphicsMagick
 
 ### 基于类型统计（饼图）
 
-* 请求路径：reports/:type
+* 请求路径：reports/:type:id 1
 * 请求方法：get
 * 响应数据
 
 ### 基于时间统计（折线图）
 
-* 请求路径：reports/:type
+* 请求路径：reports/:type:id 2
 * 请求方法：get
 * 响应数据
 
 ### 基于销量统计（柱状图）
 
-* 请求路径：reports/:type
+* 请求路径：reports/:type:id 3
 * 请求方法：get
 * 响应数据

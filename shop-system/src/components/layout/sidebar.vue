@@ -8,13 +8,13 @@
           :router='true'
         >
           <!-- 菜单选项 -->
-          <el-submenu v-for='item in rightList' :key='item.id' :index="item.path">
+          <el-submenu v-for='item in rightList' :key='item.id' :index="'/'+item.path">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span>{{item.authName}}</span>
             </template>
 
-              <el-menu-item v-for='son in item.children' :key='son.id' :index="son.path">
+              <el-menu-item v-for='son in item.children' :key='son.id' :index="'/'+son.path">
                 <i class="el-icon-menu"></i>
                 {{son.authName}}
                 </el-menu-item>
